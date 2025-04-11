@@ -14,6 +14,7 @@
       <div class="tab active" onclick="switchTab('input')">Health Input</div>
       <div class="tab" onclick="switchTab('results')">Analysis Results</div>
       <div class="tab" onclick="switchTab('history')">Health History</div>
+      <div class="tab" onclick="switchTab('dataset')">Medical Dataset</div>
     </div>
 
     <div id="input-tab" class="tab-content active">
@@ -151,6 +152,51 @@
         <h2>Your Health History</h2>
         <p>No historical data available yet. Your submissions will appear here.</p>
         <div id="historyChart"></div>
+      </div>
+    </div>
+
+    <div id="dataset-tab" class="tab-content">
+      <div class="dataset-controls">
+        <h2>Medical Dataset Analysis</h2>
+        <div class="dataset-filters">
+          <label for="filterCondition">Filter by Condition:</label>
+          <select id="filterCondition">
+            <option value="all">All Conditions</option>
+            <option value="Cancer">Cancer</option>
+            <option value="Obesity">Obesity</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Asthma">Asthma</option>
+            <option value="Hypertension">Hypertension</option>
+            <option value="Arthritis">Arthritis</option>
+          </select>
+
+          <label for="filterAge">Age Range:</label>
+          <select id="filterAge">
+            <option value="all">All Ages</option>
+            <option value="20-39">20-39</option>
+            <option value="40-59">40-59</option>
+            <option value="60+">60+</option>
+          </select>
+
+          <button onclick="analyzeDataset()">Analyze Dataset</button>
+        </div>
+
+        <div id="datasetResults">
+          <div class="dataset-stats">
+            <h3>Dataset Statistics</h3>
+            <div id="statsContainer"></div>
+          </div>
+
+          <div class="dataset-visualization">
+            <h3>Condition Distribution</h3>
+            <div id="conditionChart"></div>
+          </div>
+
+          <div class="dataset-table">
+            <h3>Patient Records</h3>
+            <div id="dataTableContainer"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
