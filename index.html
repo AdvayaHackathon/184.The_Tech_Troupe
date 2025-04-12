@@ -1,206 +1,1666 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI-Powered Health Advisor</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Advisor | Complete Health Management</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Header Styles */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        /* Main Content */
+        .app-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: var(--light);
+            color: var(--primary);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background: #f5f7fa;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary), #5dade2);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-text p {
+            opacity: 0.9;
+        }
+        
+        /* Health Input Form */
+        .health-form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .severity-slider {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .severity-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: var(--gray);
+        }
+        
+        /* Dynamic Questions */
+        .dynamic-questions {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            margin-top: 20px;
+        }
+        
+        /* Results Section */
+        .results-container {
+            display: none;
+        }
+        
+        .result-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .result-card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .risk-meter {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .risk-level {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--warning), var(--danger));
+        }
+        
+        .treatment-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .treatment-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .reason-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .reason-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .reason-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .evidence {
+            font-size: 0.85em;
+            color: var(--gray);
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .alternatives {
+            margin-top: 30px;
+        }
+        
+        .alternative-option {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .alternative-option h4 {
+            margin: 0 0 5px 0;
+            color: var(--dark);
+        }
+        
+        .alternative-option p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+        
+        /* Doctor Recommendations */
+        .doctor-recommendations {
+            background: #f0f7fb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2c3e50;
+        }
+        
+        .doctor-card {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .doctor-info {
+            flex: 1;
+        }
+        
+        .doctor-specialty {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .doctor-rating {
+            color: var(--warning);
+            font-weight: 500;
+        }
+        
+        /* Treatment Plan */
+        .treatment-plan {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .plan-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-frequency {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* Calendar View */
+        .calendar-view {
+            margin: 30px 0;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-day {
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            background: white;
+            min-height: 60px;
+        }
+        
+        .calendar-day.header {
+            font-weight: 600;
+            background: #f0f0f0;
+        }
+        
+        .calendar-day.today {
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+        
+        .calendar-day.medication {
+            background: #e8f5e9;
+            position: relative;
+        }
+        
+        .calendar-day.medication::after {
+            content: '💊';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 12px;
+        }
+        
+        .calendar-day.appointment {
+            background: #fff8e1;
+            position: relative;
+        }
+        
+        .calendar-day.appointment::after {
+            content: '🩺';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 12px;
+        }
+        
+        /* Medication List */
+        .medication-list {
+            margin: 20px 0;
+        }
+        
+        .medication-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .medication-name {
+            font-weight: 600;
+        }
+        
+        .medication-dosage {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+        
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .doctor-card {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="app-container">
-    <h1>AI-Powered Health Advisor</h1>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">AI <span>Health</span> Advisor</div>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Health Profile</a></li>
+                    <li><a href="#">History</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('input')">Health Input</div>
-      <div class="tab" onclick="switchTab('results')">Analysis Results</div>
-      <div class="tab" onclick="switchTab('history')">Health History</div>
-      <div class="tab" onclick="switchTab('dataset')">Medical Dataset</div>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <h3>Welcome, Sarah</h3>
+                <p>Last login: Today</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i>📊</i> Dashboard</a></li>
+                <li><a href="#"><i>🩺</i> Health Analysis</a></li>
+                <li><a href="#"><i>📝</i> Treatment Plans</a></li>
+                <li><a href="#"><i>📅</i> Appointments</a></li>
+                <li><a href="#"><i>💊</i> Medications</a></li>
+                <li><a href="#"><i>📈</i> Health Trends</a></li>
+                <li><a href="#"><i>⚙️</i> Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h1>Personalized Health Advisor</h1>
+                    <p>Get AI-powered treatment recommendations based on your unique health profile</p>
+                </div>
+                <div class="welcome-actions">
+                    <button class="btn" id="newAnalysisBtn">New Analysis</button>
+                </div>
+            </div>
+
+            <div id="input-tab">
+                <form id="healthForm" class="health-form">
+                    <div class="form-section">
+                        <h2>Basic Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" min="1" max="120" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" required>
+                                    <option value="">Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Lifestyle Factors</h2>
+                        <div class="form-group">
+                            <label for="lifestyle">Activity Level</label>
+                            <select id="lifestyle" required>
+                                <option value="">Select</option>
+                                <option value="sedentary">Sedentary</option>
+                                <option value="moderate">Moderately Active</option>
+                                <option value="active">Active</option>
+                                <option value="veryActive">Very Active</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stressLevel">Stress Level (1-10)</label>
+                            <input type="range" id="stressLevel" min="1" max="10" value="5" class="severity-slider" required>
+                            <div class="severity-labels">
+                                <span>Low</span>
+                                <span>Medium</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sleepQuality">Sleep Quality (1-10)</label>
+                            <input type="range" id="sleepQuality" min="1" max="10" value="7" class="severity-slider" required>
+                            <div class="severity-labels">
+                                <span>Poor</span>
+                                <span>Fair</span>
+                                <span>Excellent</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Symptom Analysis</h2>
+                        <div class="form-group">
+                            <label for="symptom">Primary Symptom</label>
+                            <select id="symptom" onchange="showDynamicQuestions()" required>
+                                <option value="">Select</option>
+                                <option value="headache">Headache</option>
+                                <option value="fatigue">Fatigue</option>
+                                <option value="anxiety">Anxiety</option>
+                                <option value="digestive">Digestive Issues</option>
+                                <option value="pain">Chronic Pain</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="symptomSeverity">Symptom Severity (1-10)</label>
+                            <input type="range" id="symptomSeverity" min="1" max="10" value="5" class="severity-slider" required>
+                            <div class="severity-labels">
+                                <span>Mild</span>
+                                <span>Moderate</span>
+                                <span>Severe</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="symptomDuration">Symptom Duration</label>
+                            <select id="symptomDuration" required>
+                                <option value="">Select</option>
+                                <option value="hours">Less than 24 hours</option>
+                                <option value="days">1-7 days</option>
+                                <option value="weeks">1-4 weeks</option>
+                                <option value="months">1-12 months</option>
+                                <option value="years">More than 1 year</option>
+                            </select>
+                        </div>
+                        
+                        <div id="dynamicQuestions" class="dynamic-questions">
+                            <!-- Dynamic questions will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Treatment Preferences</h2>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="prefMinSideEffects" checked>
+                                Minimize side effects
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="prefNonInvasive" checked>
+                                Prefer non-invasive treatments
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="prefNatural">
+                                Prefer natural remedies
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="prefCostEffective">
+                                Cost-effective options
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalNotes">Additional Notes</label>
+                        <textarea id="additionalNotes" rows="4" placeholder="Any other relevant information about your symptoms or concerns..."></textarea>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn" id="analyzeBtn">Get Recommendations</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="results-tab" class="results-container">
+                <!-- Results will be dynamically inserted here -->
+            </div>
+        </main>
     </div>
 
-    <div id="input-tab" class="tab-content active">
-      <form id="healthForm">
-        <h2>Patient Profile</h2>
-
-        <div class="preference-section">
-          <h3>Treatment Preferences</h3>
-          <div class="preference-option">
-            <input type="checkbox" id="prefMinSideEffects" checked>
-            <label for="prefMinSideEffects">Minimize side effects</label>
-          </div>
-          <div class="preference-option">
-            <input type="checkbox" id="prefNonInvasive" checked>
-            <label for="prefNonInvasive">Prefer non-invasive procedures</label>
-          </div>
-          <div class="preference-option">
-            <input type="checkbox" id="prefNatural" checked>
-            <label for="prefNatural">Prefer natural remedies</label>
-          </div>
-          <div class="preference-option">
-            <input type="checkbox" id="prefCostEffective">
-            <label for="prefCostEffective">Cost-effective options</label>
-          </div>
+    <!-- Modal for Alternative Details -->
+    <div class="modal" id="alternativeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Alternative Treatment Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Content will be dynamically inserted -->
+            </div>
         </div>
-
-        <label for="userType">User Type:</label>
-        <select id="userType">
-          <option value="patient">Patient</option>
-          <option value="doctor">Doctor</option>
-          <option value="caregiver">Caregiver</option>
-        </select>
-
-        <label for="age">Age:</label>
-        <input type="number" id="age" min="1" max="120">
-
-        <label for="gender">Gender:</label>
-        <select id="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other/Prefer not to say</option>
-        </select>
-
-        <label for="lifestyle">Lifestyle:</label>
-        <select id="lifestyle">
-          <option value="sedentary">Sedentary (little or no exercise)</option>
-          <option value="moderate">Moderately Active (light exercise 1-3 days/week)</option>
-          <option value="active">Active (moderate exercise 3-5 days/week)</option>
-          <option value="veryActive">Very Active (intense exercise 6-7 days/week)</option>
-        </select>
-
-        <label for="stressLevel">Stress Level (1-10):</label>
-        <input type="range" id="stressLevel" min="1" max="10" value="5" class="severity-slider">
-        <div class="severity-labels">
-          <span>Low</span>
-          <span>Medium</span>
-          <span>High</span>
-        </div>
-
-        <label for="sleepQuality">Sleep Quality (1-10):</label>
-        <input type="range" id="sleepQuality" min="1" max="10" value="7" class="severity-slider">
-        <div class="severity-labels">
-          <span>Poor</span>
-          <span>Fair</span>
-          <span>Excellent</span>
-        </div>
-
-        <label for="environment">Environmental Factors (select all that apply):</label>
-        <select id="environment" multiple>
-          <option value="pollution">Air Pollution</option>
-          <option value="noise">Noise Pollution</option>
-          <option value="pollen">Pollen/Allergens</option>
-          <option value="humidity">High Humidity</option>
-          <option value="mold">Mold Exposure</option>
-          <option value="chemicals">Chemical Exposure</option>
-        </select>
-
-        <label for="triggers">Known Triggers (select all that apply):</label>
-        <select id="triggers" multiple>
-          <option value="cold">Cold Weather</option>
-          <option value="foods">Certain Foods</option>
-          <option value="allergens">Allergens</option>
-          <option value="stress">Stress</option>
-          <option value="lackOfSleep">Lack of Sleep</option>
-          <option value="hormonal">Hormonal Changes</option>
-        </select>
-
-        <h2>Symptom Analysis</h2>
-
-        <label for="symptom">Primary Symptom:</label>
-        <select id="symptom" onchange="showDynamicQuestions()">
-          <option value="none">None</option>
-          <option value="headache">Headache</option>
-          <option value="fatigue">Fatigue</option>
-          <option value="anxiety">Anxiety</option>
-          <option value="digestive">Digestive Issues</option>
-          <option value="pain">Chronic Pain</option>
-          <option value="respiratory">Respiratory Issues</option>
-        </select>
-
-        <label for="symptomSeverity">Symptom Severity (1-10):</label>
-        <input type="range" id="symptomSeverity" min="1" max="10" value="5" class="severity-slider">
-        <div class="severity-labels">
-          <span>Mild</span>
-          <span>Moderate</span>
-          <span>Severe</span>
-        </div>
-
-        <label for="symptomDuration">How long have you experienced this symptom?</label>
-        <select id="symptomDuration">
-          <option value="hours">Less than 24 hours</option>
-          <option value="days">1-7 days</option>
-          <option value="weeks">1-4 weeks</option>
-          <option value="months">1-12 months</option>
-          <option value="years">More than 1 year</option>
-        </select>
-
-        <div id="dynamicQuestions"></div>
-
-        <label for="additionalNotes">Additional Notes:</label>
-        <textarea id="additionalNotes" rows="4" placeholder="Any other relevant information about your symptoms, lifestyle changes, or concerns..."></textarea>
-
-        <button type="button" onclick="analyzeData()">Analyze Symptoms & Get Recommendations</button>
-      </form>
     </div>
 
-    <div id="results-tab" class="tab-content">
-      <div id="result" class="result-box">
-        <p>Submit your health information to see personalized analysis and recommendations.</p>
-      </div>
-    </div>
-
-    <div id="history-tab" class="tab-content">
-      <div id="historyResults">
-        <h2>Your Health History</h2>
-        <p>No historical data available yet. Your submissions will appear here.</p>
-        <div id="historyChart"></div>
-      </div>
-    </div>
-
-    <div id="dataset-tab" class="tab-content">
-      <div class="dataset-controls">
-        <h2>Medical Dataset Analysis</h2>
-        <div class="dataset-filters">
-          <label for="filterCondition">Filter by Condition:</label>
-          <select id="filterCondition">
-            <option value="all">All Conditions</option>
-            <option value="Cancer">Cancer</option>
-            <option value="Obesity">Obesity</option>
-            <option value="Diabetes">Diabetes</option>
-            <option value="Asthma">Asthma</option>
-            <option value="Hypertension">Hypertension</option>
-            <option value="Arthritis">Arthritis</option>
-          </select>
-
-          <label for="filterAge">Age Range:</label>
-          <select id="filterAge">
-            <option value="all">All Ages</option>
-            <option value="20-39">20-39</option>
-            <option value="40-59">40-59</option>
-            <option value="60+">60+</option>
-          </select>
-
-          <button onclick="analyzeDataset()">Analyze Dataset</button>
-        </div>
-
-        <div id="datasetResults">
-          <div class="dataset-stats">
-            <h3>Dataset Statistics</h3>
-            <div id="statsContainer"></div>
-          </div>
-
-          <div class="dataset-visualization">
-            <h3>Condition Distribution</h3>
-            <div id="conditionChart"></div>
-          </div>
-
-          <div class="dataset-table">
-            <h3>Patient Records</h3>
-            <div id="dataTableContainer"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script>
+        // Global variables
+        let healthHistory = [];
+        let currentAnalysis = {};
+        let alternativeTreatments = {
+            1: {
+                title: "Lifestyle Modification Program",
+                effectiveness: "45%",
+                pros: ["No medication side effects", "Improves overall health", "Long-term benefits"],
+                cons: ["Requires significant lifestyle changes", "Slower results"],
+                description: "A comprehensive program focusing on diet, exercise, and stress management techniques tailored to your specific needs and symptoms."
+            },
+            2: {
+                title: "SGLT2 Inhibitors",
+                effectiveness: "68%",
+                pros: ["Proven efficacy", "Additional cardiovascular benefits"],
+                cons: ["Higher cost", "Potential for urinary tract infections"],
+                description: "A class of medications that help lower blood sugar by causing the kidneys to remove sugar from the body through urine."
+            },
+            3: {
+                title: "Ibuprofen",
+                effectiveness: "88%",
+                pros: ["Fast-acting", "Widely available"],
+                cons: ["Potential stomach irritation", "Not suitable for long-term use"],
+                description: "A nonsteroidal anti-inflammatory drug (NSAID) that works by reducing hormones that cause inflammation and pain in the body."
+            },
+            4: {
+                title: "Physical Therapy",
+                effectiveness: "72%",
+                pros: ["No medication side effects", "Addresses root causes"],
+                cons: ["Requires multiple sessions", "May be costly without insurance"],
+                description: "A treatment approach focusing on manual therapy, exercises, and education to improve mobility and reduce pain."
+            }
+        };
+        
+        // Disease database with doctor recommendations and medications
+        const diseaseDatabase = {
+            headache: {
+                name: "Chronic Headaches",
+                doctors: [
+                    {
+                        name: "Dr. Emily Chen",
+                        specialty: "Neurologist",
+                        hospital: "City General Hospital",
+                        rating: "4.8/5",
+                        experience: "12 years",
+                        distance: "3.2 miles"
+                    },
+                    {
+                        name: "Dr. Michael Rodriguez",
+                        specialty: "Pain Management Specialist",
+                        hospital: "Westside Medical Center",
+                        rating: "4.6/5",
+                        experience: "8 years",
+                        distance: "5.1 miles"
+                    }
+                ],
+                medications: [
+                    {
+                        name: "Acetaminophen",
+                        dosage: "500mg",
+                        frequency: "Every 6 hours as needed",
+                        purpose: "Pain relief"
+                    },
+                    {
+                        name: "Ibuprofen",
+                        dosage: "200-400mg",
+                        frequency: "Every 6-8 hours as needed",
+                        purpose: "Anti-inflammatory"
+                    },
+                    {
+                        name: "Sumatriptan",
+                        dosage: "50-100mg",
+                        frequency: "At onset of migraine",
+                        purpose: "Migraine relief"
+                    }
+                ],
+                treatmentPlan: [
+                    {
+                        action: "Medication intake",
+                        frequency: "As needed for pain",
+                        duration: "Until symptoms subside"
+                    },
+                    {
+                        action: "Hydration",
+                        frequency: "Daily",
+                        duration: "Ongoing"
+                    },
+                    {
+                        action: "Stress management",
+                        frequency: "Daily",
+                        duration: "Ongoing"
+                    },
+                    {
+                        action: "Follow-up appointment",
+                        frequency: "Monthly",
+                        duration: "3 months"
+                    }
+                ]
+            },
+            fatigue: {
+                name: "Chronic Fatigue",
+                doctors: [
+                    {
+                        name: "Dr. Sarah Johnson",
+                        specialty: "Endocrinologist",
+                        hospital: "Metropolitan Health",
+                        rating: "4.9/5",
+                        experience: "15 years",
+                        distance: "2.5 miles"
+                    },
+                    {
+                        name: "Dr. David Kim",
+                        specialty: "Internal Medicine",
+                        hospital: "University Hospital",
+                        rating: "4.7/5",
+                        experience: "10 years",
+                        distance: "4.3 miles"
+                    }
+                ],
+                medications: [
+                    {
+                        name: "Iron Supplement",
+                        dosage: "65mg elemental iron",
+                        frequency: "Once daily",
+                        purpose: "For iron deficiency"
+                    },
+                    {
+                        name: "Vitamin B Complex",
+                        dosage: "As per formulation",
+                        frequency: "Once daily",
+                        purpose: "Energy metabolism"
+                    },
+                    {
+                        name: "Modafinil",
+                        dosage: "100-200mg",
+                        frequency: "Once daily (morning)",
+                        purpose: "For excessive daytime sleepiness"
+                    }
+                ],
+                treatmentPlan: [
+                    {
+                        action: "Iron supplements",
+                        frequency: "Daily",
+                        duration: "3-6 months"
+                    },
+                    {
+                        action: "Sleep hygiene practice",
+                        frequency: "Daily",
+                        duration: "Ongoing"
+                    },
+                    {
+                        action: "Gradual exercise program",
+                        frequency: "3-5 times weekly",
+                        duration: "Ongoing"
+                    },
+                    {
+                        action: "Blood tests",
+                        frequency: "Every 3 months",
+                        duration: "Until levels normalize"
+                    }
+                ]
+            },
+            anxiety: {
+                name: "Anxiety Disorder",
+                doctors: [
+                    {
+                        name: "Dr. Lisa Wong",
+                        specialty: "Psychiatrist",
+                        hospital: "Mental Wellness Center",
+                        rating: "4.9/5",
+                        experience: "14 years",
+                        distance: "1.8 miles"
+                    },
+                    {
+                        name: "Dr. Robert Taylor",
+                        specialty: "Clinical Psychologist",
+                        hospital: "Harmony Clinic",
+                        rating: "4.8/5",
+                        experience: "12 years",
+                        distance: "3.7 miles"
+                    }
+                ],
+                medications: [
+                    {
+                        name: "Sertraline",
+                        dosage: "50-200mg",
+                        frequency: "Once daily",
+                        purpose: "SSRI antidepressant"
+                    },
+                    {
+                        name: "Lorazepam",
+                        dosage: "0.5-2mg",
+                        frequency: "As needed for anxiety",
+                        purpose: "Short-term relief"
+                    },
+                    {
+                        name: "Propranolol",
+                        dosage: "10-40mg",
+                        frequency: "As needed",
+                        purpose: "Physical symptoms of anxiety"
+                    }
+                ],
+                treatmentPlan: [
+                    {
+                        action: "Therapy sessions",
+                        frequency: "Weekly",
+                        duration: "3-6 months"
+                    },
+                    {
+                        action: "Medication intake",
+                        frequency: "Daily",
+                        duration: "6-12 months"
+                    },
+                    {
+                        action: "Mindfulness practice",
+                        frequency: "Daily",
+                        duration: "Ongoing"
+                    },
+                    {
+                        action: "Progress evaluation",
+                        frequency: "Monthly",
+                        duration: "Until symptoms improve"
+                    }
+                ]
+            }
+        };
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Health Advisor initialized');
+            setupEventListeners();
+            loadHealthHistory();
+            generateCalendar();
+        });
+        
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Analyze button
+            document.getElementById('analyzeBtn').addEventListener('click', analyzeData);
+            
+            // New analysis button
+            document.getElementById('newAnalysisBtn').addEventListener('click', startNewAnalysis);
+            
+            // Modal close button
+            document.querySelector('.close-modal').addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            document.getElementById('alternativeModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+        }
+        
+        // Start a new analysis
+        function startNewAnalysis() {
+            // Reset form
+            document.getElementById('healthForm').reset();
+            document.getElementById('dynamicQuestions').innerHTML = '';
+            
+            // Show input tab, hide results
+            document.getElementById('input-tab').style.display = 'block';
+            document.getElementById('results-tab').style.display = 'none';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Show dynamic questions based on selected symptom
+        function showDynamicQuestions() {
+            const symptom = document.getElementById('symptom').value;
+            const questionDiv = document.getElementById('dynamicQuestions');
+            
+            let questions = '';
+            
+            if (symptom === 'fatigue') {
+                questions = `
+                    <div class="form-group">
+                        <label for="fatiguePattern">When do you feel most fatigued?</label>
+                        <select id="fatiguePattern" required>
+                            <option value="">Select</option>
+                            <option value="morning">Morning</option>
+                            <option value="afternoon">Afternoon</option>
+                            <option value="evening">Evening</option>
+                            <option value="allDay">All day</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fatigueChange">Any recent changes that might contribute?</label>
+                        <input type="text" id="fatigueChange" placeholder="e.g., new job, illness, medication">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fatigueActivity">Does rest improve your fatigue?</label>
+                        <select id="fatigueActivity" required>
+                            <option value="">Select</option>
+                            <option value="yes">Yes</option>
+                            <option value="somewhat">Somewhat</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                `;
+            } else if (symptom === 'headache') {
+                questions = `
+                    <div class="form-group">
+                        <label for="headacheType">Headache Type:</label>
+                        <select id="headacheType" required>
+                            <option value="">Select</option>
+                            <option value="tension">Tension</option>
+                            <option value="migraine">Migraine</option>
+                            <option value="sinus">Sinus</option>
+                            <option value="cluster">Cluster</option>
+                            <option value="unknown">Not sure</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="headacheLocation">Pain Location:</label>
+                        <select id="headacheLocation" required>
+                            <option value="">Select</option>
+                            <option value="forehead">Forehead</option>
+                            <option value="temples">Temples</option>
+                            <option value="back">Back of head</option>
+                            <option value="oneSide">One side</option>
+                            <option value="allOver">All over</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="headacheTriggers">Known Headache Triggers (select all that apply):</label>
+                        <select id="headacheTriggers" multiple>
+                            <option value="stress">Stress</option>
+                            <option value="food">Certain foods</option>
+                            <option value="sleep">Sleep changes</option>
+                            <option value="hormones">Hormonal changes</option>
+                            <option value="weather">Weather changes</option>
+                        </select>
+                    </div>
+                `;
+            } else if (symptom === 'anxiety') {
+                questions = `
+                    <div class="form-group">
+                        <label for="anxietyTriggers">What situations trigger your anxiety?</label>
+                        <input type="text" id="anxietyTriggers" placeholder="e.g., social situations, work deadlines">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="anxietyPhysical">Physical Symptoms (select all that apply):</label>
+                        <select id="anxietyPhysical" multiple>
+                            <option value="heart">Racing heart</option>
+                            <option value="sweating">Sweating</option>
+                            <option value="trembling">Trembling</option>
+                            <option value="breathing">Shortness of breath</option>
+                            <option value="chest">Chest tightness</option>
+                            <option value="nausea">Nausea</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="anxietyFrequency">How often do you experience anxiety?</label>
+                        <select id="anxietyFrequency" required>
+                            <option value="">Select</option>
+                            <option value="rarely">Rarely (less than once a month)</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="daily">Daily</option>
+                            <option value="constant">Nearly constant</option>
+                        </select>
+                    </div>
+                `;
+            }
+            
+            questionDiv.innerHTML = questions;
+        }
+        
+        // Analyze the submitted data
+        function analyzeData() {
+            // Validate form
+            if (!validateForm()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('input-tab').style.display = 'none';
+            document.getElementById('results-tab').style.display = 'block';
+            document.getElementById('results-tab').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing your health data...</p>
+                    <p>Our AI is reviewing your symptoms, lifestyle factors, and preferences to generate personalized recommendations.</p>
+                </div>
+            `;
+            
+            // Scroll to results
+            window.scrollTo(0, 0);
+            
+            // Simulate analysis delay (in real app, this would be an API call)
+            setTimeout(() => {
+                generateAnalysis();
+            }, 2500);
+        }
+        
+        // Validate form inputs
+        function validateForm() {
+            const requiredFields = [
+                'age', 'gender', 'lifestyle', 'symptom', 'symptomDuration'
+            ];
+            
+            for (const fieldId of requiredFields) {
+                const element = document.getElementById(fieldId);
+                if (!element.value) {
+                    element.focus();
+                    return false;
+                }
+            }
+            
+            // Validate dynamic questions if present
+            const symptom = document.getElementById('symptom').value;
+            if (symptom === 'headache') {
+                if (!document.getElementById('headacheType').value || 
+                    !document.getElementById('headacheLocation').value) {
+                    return false;
+                }
+            } else if (symptom === 'fatigue') {
+                if (!document.getElementById('fatiguePattern').value || 
+                    !document.getElementById('fatigueActivity').value) {
+                    return false;
+                }
+            } else if (symptom === 'anxiety') {
+                if (!document.getElementById('anxietyFrequency').value) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Generate analysis results
+        function generateAnalysis() {
+            // Collect all data
+            const analysisData = {
+                timestamp: new Date().toISOString(),
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                lifestyle: document.getElementById('lifestyle').value,
+                stressLevel: document.getElementById('stressLevel').value,
+                sleepQuality: document.getElementById('sleepQuality').value,
+                symptom: document.getElementById('symptom').value,
+                symptomSeverity: document.getElementById('symptomSeverity').value,
+                symptomDuration: document.getElementById('symptomDuration').value,
+                preferences: {
+                    minSideEffects: document.getElementById('prefMinSideEffects').checked,
+                    nonInvasive: document.getElementById('prefNonInvasive').checked,
+                    natural: document.getElementById('prefNatural').checked,
+                    costEffective: document.getElementById('prefCostEffective').checked
+                },
+                symptomDetails: getSymptomDetails()
+            };
+            
+            // Store analysis
+            currentAnalysis = analysisData;
+            healthHistory.push(currentAnalysis);
+            
+            // Calculate risk level
+            const riskLevel = calculateRiskLevel(analysisData);
+            
+            // Display results
+            displayAnalysisResults(analysisData, riskLevel);
+        }
+        
+        // Get symptom-specific details
+        function getSymptomDetails() {
+            const symptom = document.getElementById('symptom').value;
+            const details = {};
+            
+            switch(symptom) {
+                case 'headache':
+                    details.type = document.getElementById('headacheType')?.value;
+                    details.location = document.getElementById('headacheLocation')?.value;
+                    details.triggers = Array.from(document.getElementById('headacheTriggers')?.selectedOptions || []).map(opt => opt.value);
+                    break;
+                case 'fatigue':
+                    details.pattern = document.getElementById('fatiguePattern')?.value;
+                    details.change = document.getElementById('fatigueChange')?.value;
+                    details.activity = document.getElementById('fatigueActivity')?.value;
+                    break;
+                case 'anxiety':
+                    details.triggers = document.getElementById('anxietyTriggers')?.value;
+                    details.physical = Array.from(document.getElementById('anxietyPhysical')?.selectedOptions || []).map(opt => opt.value);
+                    details.frequency = document.getElementById('anxietyFrequency')?.value;
+                    break;
+            }
+            
+            return details;
+        }
+        
+        // Calculate risk level
+        function calculateRiskLevel(data) {
+            let risk = 0;
+            
+            // Base risk from symptom severity
+            risk += data.symptom === 'none' ? 0 : data.symptomSeverity * 5;
+            
+            // Add from stress (inverse of sleep quality)
+            risk += (10 - data.sleepQuality) * 2;
+            
+            // Add from stress level
+            risk += data.stressLevel * 2;
+            
+            // Lifestyle factors
+            if (data.lifestyle === 'sedentary') risk += 15;
+            if (data.lifestyle === 'moderate') risk += 5;
+            
+            // Cap at 100
+            return Math.min(100, risk);
+        }
+        
+        // Display analysis results
+        function displayAnalysisResults(data, riskLevel) {
+            const diseaseInfo = diseaseDatabase[data.symptom] || {
+                name: data.symptom.charAt(0).toUpperCase() + data.symptom.slice(1),
+                doctors: [],
+                medications: [],
+                treatmentPlan: []
+            };
+            
+            const resultsHTML = `
+                <div class="result-card">
+                    <h2>Your Health Analysis Results</h2>
+                    
+                    <div class="risk-assessment">
+                        <h3>Risk Assessment</h3>
+                        <div class="risk-meter">
+                            <div class="risk-level" style="width: ${riskLevel}%"></div>
+                        </div>
+                        <p>Your overall health risk is ${getRiskLevelDescription(riskLevel)}</p>
+                    </div>
+                    
+                    ${generateTreatmentRecommendation(data, riskLevel)}
+                    
+                    <!-- Doctor Recommendations -->
+                    <div class="doctor-recommendations">
+                        <h3>Recommended Specialists for ${diseaseInfo.name}</h3>
+                        ${diseaseInfo.doctors.length > 0 ? 
+                            diseaseInfo.doctors.map(doctor => `
+                                <div class="doctor-card">
+                                    <div class="doctor-info">
+                                        <h4>${doctor.name}</h4>
+                                        <p class="doctor-specialty">${doctor.specialty}</p>
+                                        <p>${doctor.hospital}</p>
+                                        <p>Experience: ${doctor.exexperience} • Rating: <span class="doctor-rating">${doctor.rating}</span></p>
+                                        <p>Distance: ${doctor.distance}</p>
+                                    </div>
+                                    <div>
+                                        <button class="btn">Book Appointment</button>
+                                    </div>
+                                </div>
+                            `).join('') :
+                            '<p>No specific specialist recommendations available for this condition.</p>'
+                        }
+                    </div>
+                    
+                    <!-- Treatment Plan -->
+                    <div class="treatment-plan">
+                        <h3>Suggested Treatment Plan</h3>
+                        ${diseaseInfo.treatmentPlan.length > 0 ? `
+                            <div>
+                                ${diseaseInfo.treatmentPlan.map(item => `
+                                    <div class="plan-item">
+                                        <div>
+                                            <strong>${item.action}</strong>
+                                            <p>${item.purpose || ''}</p>
+                                        </div>
+                                        <div class="plan-frequency">
+                                            ${item.frequency}${item.duration ? ` for ${item.duration}` : ''}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p>No specific treatment plan available for this condition.</p>'}
+                    </div>
+                    
+                    <!-- Medication List -->
+                    <div class="medication-list">
+                        <h3>Common Medications for ${diseaseInfo.name}</h3>
+                        ${diseaseInfo.medications.length > 0 ? `
+                            <div>
+                                ${diseaseInfo.medications.map(med => `
+                                    <div class="medication-item">
+                                        <div>
+                                            <span class="medication-name">${med.name}</span>
+                                            <span class="medication-dosage">${med.dosage}</span>
+                                        </div>
+                                        <div>
+                                            <p>${med.frequency}</p>
+                                            <p>${med.purpose}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p>No specific medication recommendations available for this condition.</p>'}
+                    </div>
+                    
+                    <!-- Calendar View -->
+                    <div class="calendar-view">
+                        <h3>Monthly Treatment Calendar</h3>
+                        <div id="calendarContainer"></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn" onclick="saveAnalysis()">Save This Analysis</button>
+                        <button class="btn btn-outline" onclick="startNewAnalysis()">Start New Analysis</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('results-tab').innerHTML = resultsHTML;
+            generateCalendar();
+        }
+        
+        // Generate treatment recommendation HTML
+        function generateTreatmentRecommendation(data, riskLevel) {
+            let treatment = '';
+            let alternatives = '';
+            
+            // This would normally come from your AI model
+            if (data.symptom === 'headache') {
+                treatment = `
+                    <div class="treatment-card">
+                        <h3>Recommended Treatment: Acetaminophen + Lifestyle Modifications</h3>
+                        <div class="explanation">
+                            <h4>Why This Treatment?</h4>
+                            <ul class="reason-list">
+                                <li>
+                                    <strong>Effectiveness:</strong> 85% success rate for tension-type headaches
+                                    <span class="evidence">(based on 2,417 similar cases)</span>
+                                </li>
+                                <li>
+                                    <strong>Safety:</strong> Low risk profile matches your preference for minimal side effects
+                                </li>
+                                <li>
+                                    <strong>Alignment:</strong> Non-invasive approach preferred
+                                </li>
+                            </ul>
+                            
+                            <div class="risk-reward">
+                                <h4>Risk vs. Reward Analysis</h4>
+                                <p><strong>Expected efficacy:</strong> 85% (±4%)</p>
+                                <p><strong>Adverse effect probability:</strong> 8% (mostly mild)</p>
+                                <p><strong>Most common side effect:</strong> None in most cases</p>
+                            </div>
+                        </div>
+                `;
+                
+                alternatives = `
+                        <div class="alternatives">
+                            <h4>Alternative Options</h4>
+                            <div class="alternative-option">
+                                <div>
+                                    <h4>Ibuprofen</h4>
+                                    <p>88% effectiveness, slightly higher risk of stomach irritation</p>
+                                </div>
+                                <button class="btn-outline" onclick="showAlternativeDetails(3)">Details</button>
+                            </div>
+                            <div class="alternative-option">
+                                <div>
+                                    <h4>Physical Therapy</h4>
+                                    <p>72% effectiveness, no medication side effects</p>
+                                </div>
+                                <button class="btn-outline" onclick="showAlternativeDetails(4)">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (data.symptom === 'fatigue') {
+                treatment = `
+                    <div class="treatment-card">
+                        <h3>Recommended Treatment: Sleep Optimization + Iron Supplementation</h3>
+                        <div class="explanation">
+                            <h4>Why This Treatment?</h4>
+                            <ul class="reason-list">
+                                <li>
+                                    <strong>Effectiveness:</strong> 78% success rate for fatigue with your profile
+                                    <span class="evidence">(based on 3,112 similar cases)</span>
+                                </li>
+                                <li>
+                                    <strong>Safety:</strong> Natural approach with minimal side effects
+                                </li>
+                                <li>
+                                    <strong>Alignment:</strong> Matches your preference for natural remedies
+                                </li>
+                            </ul>
+                            
+                            <div class="risk-reward">
+                                <h4>Risk vs. Reward Analysis</h4>
+                                <p><strong>Expected efficacy:</strong> 78% (±6%)</p>
+                                <p><strong>Adverse effect probability:</strong> 5% (mostly mild)</p>
+                                <p><strong>Most common side effect:</strong> Occasional constipation from iron</p>
+                            </div>
+                        </div>
+                `;
+                
+                alternatives = `
+                        <div class="alternatives">
+                            <h4>Alternative Options</h4>
+                            <div class="alternative-option">
+                                <div>
+                                    <h4>Stimulant Medication</h4>
+                                    <p>92% effectiveness, higher side effect risk</p>
+                                </div>
+                                <button class="btn-outline" onclick="showAlternativeDetails(1)">Details</button>
+                            </div>
+                            <div class="alternative-option">
+                                <div>
+                                    <h4>Cognitive Behavioral Therapy</h4>
+                                    <p>65% effectiveness, no physical side effects</p>
+                                </div>
+                                <button class="btn-outline" onclick="showAlternativeDetails(2)">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return treatment + alternatives + generateContextualFactors(data);
+        }
+        
+        // Generate contextual factors HTML
+        function generateContextualFactors(data) {
+            let factors = [];
+            
+            if (data.lifestyle === 'sedentary') {
+                factors.push("Sedentary lifestyle contributing to health risks");
+            }
+            
+            if (data.stressLevel > 6) {
+                factors.push("Elevated stress levels affecting wellbeing");
+            }
+            
+            if (data.sleepQuality < 5) {
+                factors.push("Suboptimal sleep quality impacting recovery");
+            }
+            
+            if (data.preferences.nonInvasive) {
+                factors.push("Strong preference for non-invasive treatments");
+            }
+            
+            return `
+                <div class="context-factors">
+                    <h3>Key Factors Considered</h3>
+                    <ul>
+                        ${factors.map(factor => `<li>${factor}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Generate calendar view
+        function generateCalendar() {
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Determine the day of the week for the first day (0 = Sunday, 1 = Monday, etc.)
+            const startingDay = firstDay.getDay();
+            
+            // Calendar header with month/year
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"];
+            
+            let calendarHTML = `
+                <div class="calendar-header">
+                    <h4>${monthNames[currentMonth]} ${currentYear}</h4>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day header">Sun</div>
+                    <div class="calendar-day header">Mon</div>
+                    <div class="calendar-day header">Tue</div>
+                    <div class="calendar-day header">Wed</div>
+                    <div class="calendar-day header">Thu</div>
+                    <div class="calendar-day header">Fri</div>
+                    <div class="calendar-day header">Sat</div>
+            `;
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDay; i++) {
+                calendarHTML += `<div class="calendar-day"></div>`;
+            }
+            
+            // Add cells for each day of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dayOfWeek = date.getDay();
+                const isToday = day === today.getDate() && currentMonth === today.getMonth();
+                
+                // Randomly mark some days as medication or appointment days
+                let dayClass = "calendar-day";
+                if (isToday) dayClass += " today";
+                
+                // For demo purposes - in a real app this would come from the treatment plan
+                if (day % 7 === 0 || day % 5 === 0) {
+                    dayClass += " medication";
+                }
+                if (day % 10 === 0 || day === 15) {
+                    dayClass += " appointment";
+                }
+                
+                calendarHTML += `<div class="${dayClass}">${day}</div>`;
+            }
+            
+            calendarHTML += `</div>`;
+            
+            // Add to the DOM
+            const calendarContainer = document.getElementById('calendarContainer');
+            if (calendarContainer) {
+                calendarContainer.innerHTML = calendarHTML;
+            }
+        }
+        
+        // Get risk level description
+        function getRiskLevelDescription(riskLevel) {
+            if (riskLevel < 30) return '<strong>low</strong> (generally healthy)';
+            if (riskLevel < 60) return '<strong>moderate</strong> (some concerns)';
+            return '<strong>high</strong> (multiple risk factors)';
+        }
+        
+        // Show alternative treatment details in modal
+        function showAlternativeDetails(id) {
+            const alt = alternativeTreatments[id];
+            
+            document.getElementById('modalTitle').textContent = alt.title;
+            document.getElementById('modalBody').innerHTML = `
+                <h3>${alt.title}</h3>
+                <p><strong>Effectiveness:</strong> ${alt.effectiveness}</p>
+                <p>${alt.description}</p>
+                
+                <div class="pros-cons">
+                    <div>
+                        <h4>Benefits</h4>
+                        <ul>
+                            ${alt.pros.map(pro => `<li>${pro}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Drawbacks</h4>
+                        <ul>
+                            ${alt.cons.map(con => `<li>${con}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                <button class="btn" style="margin-top: 20px;" onclick="closeModal()">Close</button>
+            `;
+            
+            document.getElementById('alternativeModal').style.display = 'flex';
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('alternativeModal').style.display = 'none';
+        }
+        
+        // Save analysis to history
+        function saveAnalysis() {
+            // In a real app, this would save to a database
+            alert('Analysis saved to your health history');
+            loadHealthHistory();
+        }
+        
+        // Load health history
+        function loadHealthHistory() {
+            // In a real app, this would load from a database
+            console.log('Loading health history...');
+        }
+    </script>
 </body>
 </html>
